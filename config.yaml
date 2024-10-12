@@ -1,0 +1,49 @@
+# This file is to specify experiment settings for modeling training
+
+experiment_number: 0
+
+# don't change preprocess steps often for now
+preprocess_steps:
+  - slice_images
+  - grayscale
+
+preprocess_settings:
+  slice_size:
+    - 500 # width
+    - 500 # height
+
+model_settings:
+  model_zoo_cfg: 'COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml'
+  dataloader__num_workers: 2
+  solver__ims_per_batch: 2
+  solver__base_learning_rate: 0.00025
+  solver__max_iter: 600
+  solver__steps: []
+  model__roi_heads__batch_size_per_image: 128
+  model__roi_heads__num_classes: 1 # don't change this unless we add more things to find
+  model__roi_heads__score_threshold_test: 0.7
+
+
+#### This section should not change
+datasets:
+  - white_sands_heli
+  - white_sands_sat
+  # - hirise_mars
+
+classes:
+  - xstrata
+  # - ponding_shorelines
+
+env_paths:
+  google_colab:
+    working_dir: '/content/gdrive/MyDrive/__Shared/Andrew/working_directory'
+    data_path: 'data_sources'
+    output_path: 'output'
+
+dataset_paths:
+  white_sands_sat: 'white_sands_sat/annotated'
+  white_sands_heli: 'white_sands_heli/xstrata'
+
+
+
+
