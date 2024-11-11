@@ -1,1 +1,0 @@
-# register dataset for detectron2 use, associated utilities

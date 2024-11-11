@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 
 from config_utils import Config
+from data_processing.data_preprocess import remove_out_of_bounds_annotations, derive_bbox_from_segmentation
 
 
 def get_anno_path(anno_dir, date_str: str = ''):
@@ -16,17 +17,9 @@ def get_anno_path(anno_dir, date_str: str = ''):
     return anno_filepath
 
 
-def split_json_train_test_val(cfg: dict,
-                              json_filepath: str,
+def split_json_train_test_val(json_filepath: str,
                               image_dirs: list,
                               anno_dirs: list) -> None:
-
-                              # train_image_dir: str,
-                              # test_image_dir: str,
-                              # val_image_dir: str,
-                              # train_json_filepath: str,
-                              # test_json_filepath: str,
-                              # val_json_filepath: str) -> None:
 
     with open(json_filepath) as json_file:
         labels = json.load(json_file)
@@ -58,47 +51,5 @@ def split_json_train_test_val(cfg: dict,
                 outfile.close()
 
         json_file.close()
-
-        # train_files = os.listdir(train_image_dir)
-        # test_files = os.listdir(test_image_dir)
-        # val_files = os.listdir(val_image_dir)
-
-        # labels_images['train'] = np.where(labels_images['file_name'].isin(train_files), 1, 0)
-        # labels_images['test'] = np.where(labels_images['file_name'].isin(test_files), 1, 0)
-        # labels_images['val'] = np.where(labels_images['file_name'].isin(val_files), 1, 0)
-
-        # train_image_list = labels_images.loc[labels_images['train'] == 1].copy().drop(columns=['train', 'test', 'val']).to_dict(
-        #     orient='records')
-        # test_image_list = labels_images.loc[labels_images['test'] == 1].copy().drop(columns=['train', 'test', 'val']).to_dict(
-        #     orient='records')
-        # val_image_list = labels_images.loc[labels_images['val'] == 1].copy().drop(columns=['train', 'test', 'val']).to_dict(
-        #     orient='records')
-
-        # labels_annots['train'] = np.where(
-        #     labels_annots['image_id'].isin(labels_images.loc[labels_images.train == 1]['id'].unique()), 1, 0)
-        # labels_annots['val'] = np.where(
-        #     labels_annots['image_id'].isin(labels_images.loc[labels_images.val == 1]['id'].unique()), 1, 0)
-
-        # train_annot_list = labels_annots.loc[labels_annots['train'] == 1].copy().drop(columns=['train', 'val']).to_dict(
-        #     orient='records')
-        # val_annot_list = labels_annots.loc[labels_annots['val'] == 1].copy().drop(columns=['train', 'val']).to_dict(
-        #     orient='records')
-
-        # train_dict = {'info': labels['info'],
-        #               'images': train_image_list,
-        #               'annotations': train_annot_list,
-        #               'categories': labels['categories']}
-        # val_dict = {'info': labels['info'],
-        #             'images': val_image_list,
-        #             'annotations': val_annot_list,
-        #             'categories': labels['categories']}
-
-        # with open(train_json_filepath, "w") as outfile:
-        #     json.dump(train_dict, outfile)
-        #     outfile.close()
-        #
-        # with open(val_json_filepath, "w") as outfile:
-        #     json.dump(val_dict, outfile)
-        #     outfile.close()
 
 
